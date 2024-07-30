@@ -140,7 +140,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
         max_eval = -float('inf')
         for move in legal_moves:
             board.push(move)
-            eval = minimax(board, depth - 1, alpha, beta, not maximizer)
+            eval = minimax(board, depth - 1, alpha, beta, False)
             board.pop()
             max_eval = max(max_eval, eval)
             alpha = max(alpha, eval)
@@ -151,7 +151,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
         min_eval = float('inf')
         for move in legal_moves:
             board.push(move)
-            eval = minimax(board, depth - 1, alpha, beta, not maximizer)
+            eval = minimax(board, depth - 1, alpha, beta, True)
             board.pop()
             min_eval = min(min_eval, eval)
             beta = min(beta, eval)
@@ -171,7 +171,7 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
 
     for move in board.legal_moves:
         board.push(move)
-        board_value = minimax(board, depth - 1, alpha, beta, not maximize)
+        board_value = minimax(board, depth - 1, alpha, beta, True)
         board.pop()
         if maximize and board_value >= best_value:
             best_value = board_value
