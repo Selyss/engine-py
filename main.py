@@ -161,10 +161,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
 
 
 def find_best_move_and_evaluation(board: chess.Board, depth):
-    maximize = board.turn == chess.WHITE
     best_value = -float('inf')
-    if not maximize:
-        best_move = float('inf')
 
     alpha = -float('inf')
     beta = float('inf')
@@ -173,10 +170,10 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
         board.push(move)
         board_value = minimax(board, depth - 1, alpha, beta, True)
         board.pop()
-        if maximize and board_value >= best_value:
+        if board_value >= best_value:
             best_value = board_value
             best_move = move
-        elif not maximize and board_value <= best_value:
+        elif board_value <= best_value:
             best_value = board_value
             best_move = move
 
