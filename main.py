@@ -24,23 +24,21 @@ def minimax(board: chess.Board, depth, maximizer):
     if depth == 0 or board.is_game_over():
         return evaluate(board)
     
-    legal_moves = list(board.legal_moves)
-
     if maximizer:
         max_eval = -float('inf')
-        for move in legal_moves:
+        for move in board.legal_moves:
             board.push(move)
             eval = minimax(board, depth - 1, False)
-            board.pop()
             max_eval = max(max_eval, eval)
+            board.pop()
         return max_eval
     else:
         min_eval = float('inf')
-        for move in legal_moves:
+        for move in board.legal_moves:
             board.push(move)
             eval = minimax(board, depth - 1, True)
-            board.pop()
             min_eval = min(min_eval, eval)
+            board.pop()
         return min_eval
 
 
