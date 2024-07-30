@@ -1,7 +1,7 @@
 import chess
 import chess.engine
 
-DEPTH: int = 4
+DEPTH: int = 5
 
 piece_values = {
     chess.PAWN: 100,
@@ -75,7 +75,7 @@ def evaluate(board: chess.Board):
 
     white_score = sum([piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][square]
                        for square, piece in board.piece_map().items() if piece.color == chess.WHITE])
-    black_score = sum([piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][square]
+    black_score = sum([piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][chess.square_mirror(square)]
                        for square, piece in board.piece_map().items() if piece.color == chess.BLACK])
 
     return white_score - black_score
