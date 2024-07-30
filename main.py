@@ -70,13 +70,18 @@ def evaluate(board: chess.Board):
             return -9999
         else:
             return 9999
+        
     elif board.is_stalemate() or board.is_insufficient_material():
         return 0
 
-    white_score = sum([piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][square]
-                       for square, piece in board.piece_map().items() if piece.color == chess.WHITE])
-    black_score = sum([piece_values[piece.piece_type] + list(reversed(piece_square_tables[piece.piece_type][square]))
-                       for square, piece in board.piece_map().items() if piece.color == chess.BLACK])
+    white_score = 0
+    black_score = 0
+
+    for square, piece in board.piece_map().items():
+        if piece.color == chess.WHITE:
+            white_score += piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][square]
+        else:
+            black_score += piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][chess.square_mirror(square)]
 
     return white_score - black_score
 
