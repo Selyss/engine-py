@@ -170,7 +170,7 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
 
     for move in board.legal_moves:
         board.push(move)
-        board_value = minimax(board, depth - 1, alpha, beta, True)
+        board_value = minimax(board, depth - 1, alpha, beta, False)
         board.pop()
         if board_value >= best_value:
             best_value = board_value
