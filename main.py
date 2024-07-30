@@ -63,6 +63,11 @@ piece_square_tables = {
                  17,  30,  -3, -14,   6,  -1,  40,  18],
 }
 
+def evaluate_piece(piece, square):
+    if piece.color == chess.WHITE:
+        return piece_square_tables[piece.piece_type][square]
+    else:
+        return piece_square_tables[piece.piece_type][chess.square_mirror(square)]
 
 def evaluate(board: chess.Board):
     if board.is_checkmate():
@@ -78,10 +83,12 @@ def evaluate(board: chess.Board):
     black_score = 0
 
     for square, piece in board.piece_map().items():
+        piece_value = piece_values[piece.piece_type]
+        square_eval = evaluate_piece(piece, square)
         if piece.color == chess.WHITE:
-            white_score += piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][square]
+            white_score += piece_value + square_eval
         else:
-            black_score += piece_values[piece.piece_type] + piece_square_tables[piece.piece_type][chess.square_mirror(square)]
+            black_score += piece_value + square_eval
 
     return white_score - black_score
 
