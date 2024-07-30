@@ -145,7 +145,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
             max_eval = max(max_eval, eval)
             alpha = max(alpha, eval)
             if beta <= alpha:
-                break
+                return max_eval
         return max_eval
     else:
         min_eval = float('inf')
@@ -156,7 +156,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
             min_eval = min(min_eval, eval)
             beta = min(beta, eval)
             if beta <= alpha:
-                break
+                return min_eval
         return min_eval
 
 
