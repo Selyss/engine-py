@@ -126,8 +126,10 @@ def evaluate(board: chess.Board):
         square_eval = evaluate_piece(piece, square)
 
         eval = piece_eval + square_eval
-        # overall_eval += eval if piece.color == chess.WHITE else -eval
-        overall_eval += eval
+        if piece.color == chess.WHITE:
+            overall_eval += eval
+        else:
+            overall_eval -= eval
 
     return overall_eval
 
