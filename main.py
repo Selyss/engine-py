@@ -3,26 +3,22 @@ import chess.engine
 
 DEPTH: int = 4
 
+piece_values = {
+    chess.PAWN: 100,
+    chess.ROOK: 500,
+    chess.KNIGHT: 320,
+    chess.BISHOP: 330,
+    chess.QUEEN: 900,
+    chess.KING: 20000
+}
+
+
 def evaluate(board: chess.Board):
-    white_material = sum([piece_value(piece) for piece in board.piece_map().values() if piece.color == chess.WHITE])
-    black_material = sum([piece_value(piece) for piece in board.piece_map().values() if piece.color == chess.BLACK])
+    white_material = sum([piece_values[piece.piece_type] for piece in board.piece_map().values() if piece.color == chess.WHITE])
+    black_material = sum([piece_values[piece.piece_type] for piece in board.piece_map().values() if piece.color == chess.BLACK])
 
     return float(white_material - black_material)
 
-
-def piece_value(piece):
-    if piece.piece_type == chess.PAWN:
-        return 1
-    elif piece.piece_type == chess.KNIGHT:
-        return 3
-    elif piece.piece_type == chess.BISHOP:
-        return 3
-    elif piece.piece_type == chess.ROOK:
-        return 5
-    elif piece.piece_type == chess.QUEEN:
-        return 9
-    else:
-        return 0
     
 def minimax(board: chess.Board, depth, maximizer):
     if depth == 0 or board.is_game_over():
