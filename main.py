@@ -106,14 +106,14 @@ def evaluate_piece(piece: chess.Piece, square: chess.Square):
     
 
 def evaluate(board: chess.Board):
-    if board.is_checkmate():
-        if board.turn == chess.WHITE:
-            return -9999
-        else:
-            return 9999
+    # if board.is_checkmate():
+    #     if board.turn == chess.WHITE:
+    #         return -9999
+    #     else:
+    #         return 9999
         
-    elif board.is_stalemate() or board.is_insufficient_material():
-        return 0
+    # elif board.is_stalemate() or board.is_insufficient_material():
+    #     return 0
 
     overall_eval = 0
 
