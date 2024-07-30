@@ -1,7 +1,6 @@
 import chess
 import chess.engine
 
-board = chess.Board(chess.STARTING_FEN)
 DEPTH: int = 3
 
 def evaluate(board: chess.Board):
@@ -61,17 +60,39 @@ def find_best_move(board: chess.Board, depth):
             best_move = move
     return best_move
 
-while not board.is_game_over():
-    print(board)
-    print("\n")
+# TODO: learn more about this uci wrapper
+def uci_loop():
+    board = chess.Board()
+    while True:
+        command = input()
+        if command == "uci":
+            print("id name engine-py")
+            print("id author Selyss")
+            print("uciok")
 
-    # this if statement is weird
-    if board.turn == chess.WHITE:
-        move = find_best_move(board, DEPTH)
-    else:
-        move = find_best_move(board, DEPTH)
+        elif command == "isready":
+            print("readyok")
 
-    board.push(move)
+        elif command.startswith("position"):
+            if "startpos" in command:
+                board.set_fen(chess.STARTING_FEN)
+                moves = command.split("moves")[1].strip() if "moves" in command else ""
+                for move in moves.split():
+                    board.push_uci(move)
 
-print("Game Over!")
-print(board.result())
+            elif "fen" in command:
+                fen = command.split("position fen")[1].strip().split(" moves")[0].strip()
+                board.set_fen(fen)
+                moves = command.split("moves")[1].strip() if "moves" in command else ""
+                for move in moves.split():
+                    board.push_uci(move)
+
+        elif command.startswith("go"):
+            move = find_best_move(board, DEPTH)
+            print(f"bestmove {move.uci()}")
+
+        elif command == "quit":
+            break
+
+if __name__ == "__main__":
+    uci_loop()
