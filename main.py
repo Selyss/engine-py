@@ -1,7 +1,7 @@
 import chess
 import chess.engine
 
-DEPTH: int = 4
+DEPTH: int = 3
 
 ### Tables, piece values, and piece eval from https://github.com/healeycodes/andoma/blob/main/evaluate.py
 
@@ -158,7 +158,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
             beta = min(beta, eval)
             if beta <= alpha:
                 break
-            
+
         return min_eval
 
 
