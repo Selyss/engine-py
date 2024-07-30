@@ -161,18 +161,25 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
 
 
 def find_best_move_and_evaluation(board: chess.Board, depth):
-    best_move = None
-    best_value = -float('inf') if board.turn == chess.BLACK else float('inf')
+    maximize = board.turn == chess.WHITE
+    best_value = -float('inf')
+    if not maximize:
+        best_move = float('inf')
+
     alpha = -float('inf')
     beta = float('inf')
 
     for move in board.legal_moves:
         board.push(move)
-        board_value = minimax(board, depth - 1, alpha, beta, board.turn == chess.BLACK)
+        board_value = minimax(board, depth - 1, alpha, beta, not maximize)
         board.pop()
-        if board_value > best_value:
+        if maximize and board_value >= best_value:
             best_value = board_value
             best_move = move
+        elif not maximize and board_value <= best_value:
+            best_value = board_value
+            best_move = move
+            
     return best_move, best_value
 
 # TODO: learn more about this uci wrapper
