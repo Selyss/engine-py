@@ -173,9 +173,6 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
         if board_value >= best_value:
             best_value = board_value
             best_move = move
-        elif board_value <= best_value:
-            best_value = board_value
-            best_move = move
 
     return best_move, best_value
 
