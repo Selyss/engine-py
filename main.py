@@ -126,7 +126,8 @@ def evaluate(board: chess.Board):
         square_eval = evaluate_piece(piece, square)
 
         eval = piece_eval + square_eval
-        overall_eval += eval if piece.color == chess.WHITE else -eval
+        # overall_eval += eval if piece.color == chess.WHITE else -eval
+        overall_eval += eval
 
     return overall_eval
 
@@ -178,7 +179,7 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
             best_value = board_value
             best_move = move
         
-        alpha = max(alpha, best_value)
+        # alpha = max(alpha, board_value)
 
     return best_move, best_value
 
