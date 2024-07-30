@@ -140,23 +140,25 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
         max_eval = -float('inf')
         for move in legal_moves:
             board.push(move)
-            eval = minimax(board, depth - 1, alpha, beta, True)
+            eval = minimax(board, depth - 1, alpha, beta, False)
             board.pop()
             max_eval = max(max_eval, eval)
             alpha = max(alpha, eval)
             if beta <= alpha:
-                return max_eval
+                break
+
         return max_eval
     else:
         min_eval = float('inf')
         for move in legal_moves:
             board.push(move)
-            eval = minimax(board, depth - 1, alpha, beta, False)
+            eval = minimax(board, depth - 1, alpha, beta, True)
             board.pop()
             min_eval = min(min_eval, eval)
             beta = min(beta, eval)
             if beta <= alpha:
-                return min_eval
+                break
+            
         return min_eval
 
 
