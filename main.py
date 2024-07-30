@@ -137,6 +137,8 @@ def evaluate(board: chess.Board):
 
 def minimax(board: chess.Board, depth, alpha, beta, maximizer):
     # base case
+    maximizer = not maximizer
+
     if depth == 0 or board.is_game_over():
         return evaluate(board)
 
