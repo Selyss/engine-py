@@ -115,18 +115,20 @@ def evaluate(board: chess.Board):
     elif board.is_stalemate() or board.is_insufficient_material():
         return 0
 
-    white_score = 0
-    black_score = 0
+    overall_eval = 0
 
-    for square, piece in board.piece_map().items():
-        piece_value = piece_values[piece.piece_type]
+    for square in chess.SQUARES:
+        piece = board.piece_at(square)
+        if not piece:
+            continue
+
+        piece_eval = piece_values[piece.piece_type] 
         square_eval = evaluate_piece(piece, square)
-        if piece.color == chess.WHITE:
-            white_score += piece_value + square_eval
-        else:
-            black_score += piece_value + square_eval
 
-    return white_score - black_score
+        eval = piece_eval + square_eval
+        overall_eval += eval if piece.color == chess.WHITE else -eval
+
+    return overall_eval
 
 
 def minimax(board: chess.Board, depth, alpha, beta, maximizer):
