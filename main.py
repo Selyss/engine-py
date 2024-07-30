@@ -81,34 +81,44 @@ def evaluate(board: chess.Board):
     return white_score - black_score
 
 
-def minimax(board: chess.Board, depth, maximizer):
+def minimax(board: chess.Board, depth, alpha, beta, maximizer):
     if depth == 0 or board.is_game_over():
         return evaluate(board)
 
+    legal_moves = list(board.legal_moves)
     if maximizer:
         max_eval = -float('inf')
-        for move in board.legal_moves:
+        for move in legal_moves:
             board.push(move)
-            eval = minimax(board, depth - 1, False)
-            max_eval = max(max_eval, eval)
+            eval = minimax(board, depth - 1, alpha, beta, False)
             board.pop()
+            max_eval = max(max_eval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:
+                break
         return max_eval
     else:
         min_eval = float('inf')
-        for move in board.legal_moves:
+        for move in legal_moves:
             board.push(move)
-            eval = minimax(board, depth - 1, True)
-            min_eval = min(min_eval, eval)
+            eval = minimax(board, depth - 1, alpha, beta, True)
             board.pop()
+            min_eval = min(min_eval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha:
+                break
         return min_eval
 
 
 def find_best_move(board: chess.Board, depth):
     best_move = None
     best_value = -float('inf')
+    alpha = -float('inf')
+    beta = float('inf')
+
     for move in board.legal_moves:
         board.push(move)
-        board_value = minimax(board, depth - 1, False)
+        board_value = minimax(board, depth - 1, alpha, beta, False)
         board.pop()
         if board_value > best_value:
             best_value = board_value
@@ -116,8 +126,6 @@ def find_best_move(board: chess.Board, depth):
     return best_move
 
 # TODO: learn more about this uci wrapper
-
-
 def uci_loop():
     board = chess.Board()
     while True:
