@@ -1,7 +1,7 @@
 import chess
 import chess.engine
 
-DEPTH: int = 10
+DEPTH: int = 5
 
 def evaluate(board: chess.Board):
     white_material = sum([piece_value(piece) for piece in board.piece_map().values() if piece.color == chess.WHITE])
