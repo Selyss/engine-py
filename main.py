@@ -106,14 +106,14 @@ def evaluate_piece(piece: chess.Piece, square: chess.Square):
     
 
 def evaluate(board: chess.Board):
-    # if board.is_checkmate():
-    #     if board.turn == chess.WHITE:
-    #         return -9999
-    #     else:
-    #         return 9999
+    if board.is_checkmate():
+        if board.turn == chess.WHITE:
+            return -9999
+        else:
+            return 9999
         
-    # elif board.is_stalemate() or board.is_insufficient_material():
-    #     return 0
+    elif board.is_stalemate() or board.is_insufficient_material():
+        return 0
 
     overall_eval = 0
 
@@ -168,7 +168,7 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
 
     for move in board.legal_moves:
         board.push(move)
-        board_value = minimax(board, depth - 1, alpha, beta, False)
+        board_value = minimax(board, depth - 1, alpha, beta, board.turn == chess.BLACK)
         board.pop()
         if board_value > best_value:
             best_value = board_value
