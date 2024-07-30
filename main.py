@@ -1,10 +1,14 @@
 import chess
 import chess.engine
 
-board = chess.Board
+board = chess.Board(chess.STARTING_FEN)
 
 def evaluate(board: chess.Board):
-    return sum([piece_value(piece) for piece in board.piece_map().values()])
+    white_material = sum([piece_value(piece) for piece in board.piece_map().values() if piece.color == chess.WHITE])
+    black_material = sum([piece_value(piece) for piece in board.piece_map().values() if piece.color == chess.BLACK])
+
+    return white_material - black_material
+
 
 def piece_value(piece):
     if piece.piece_type == chess.PAWN:
