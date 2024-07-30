@@ -1,7 +1,7 @@
 import chess
 import chess.engine
 
-DEPTH: int = 5
+DEPTH: int = 3
 
 ### Tables, piece values, and piece eval from https://github.com/healeycodes/andoma/blob/main/evaluate.py
 
