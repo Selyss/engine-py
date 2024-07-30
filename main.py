@@ -1,7 +1,7 @@
 import chess
 import chess.engine
 
-DEPTH: int = 3
+DEPTH: int = 5
 
 ### Tables, piece values, and piece eval from https://github.com/healeycodes/andoma/blob/main/evaluate.py
 
@@ -169,7 +169,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
 
 def find_best_move_and_evaluation(board: chess.Board, depth):
     best_move = None
-    best_value = float('inf')
+    best_value = -float('inf')
 
     alpha = -float('inf')
     beta = float('inf')
@@ -183,8 +183,6 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
             best_value = board_value
             best_move = move
         
-        # alpha = max(alpha, board_value)
-
     return best_move, best_value
 
 # TODO: learn more about this uci wrapper
