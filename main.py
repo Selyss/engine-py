@@ -1,7 +1,7 @@
 import chess
 import chess.engine
 
-DEPTH: int = 5
+DEPTH: int = 4
 
 ### Tables, piece values, and piece eval from https://github.com/healeycodes/andoma/blob/main/evaluate.py
 
@@ -87,6 +87,7 @@ kingEvalBlack = list(reversed(kingEvalWhite))
 
 
 def evaluate_piece(piece: chess.Piece, square: chess.Square):
+    mapping = []
     if piece.piece_type == chess.PAWN:
         mapping = pawnEvalWhite if piece.color == chess.WHITE else pawnEvalBlack
     if piece.piece_type == chess.KNIGHT:
@@ -157,7 +158,7 @@ def minimax(board: chess.Board, depth, alpha, beta, maximizer):
         return min_eval
 
 
-def find_best_move(board: chess.Board, depth):
+def find_best_move_and_evaluation(board: chess.Board, depth):
     best_move = None
     best_value = -float('inf')
     alpha = -float('inf')
@@ -170,7 +171,7 @@ def find_best_move(board: chess.Board, depth):
         if board_value > best_value:
             best_value = board_value
             best_move = move
-    return best_move
+    return best_move, best_value
 
 # TODO: learn more about this uci wrapper
 def uci_loop():
@@ -203,8 +204,9 @@ def uci_loop():
                     board.push_uci(move)
 
         elif command.startswith("go"):
-            move = find_best_move(board, DEPTH)
-            print(f"bestmove {move.uci()}")
+            best_move, evaluation = find_best_move_and_evaluation(board, DEPTH)
+            print(f"bestmove {best_move.uci()}")
+            print(f"info score cp {evaluation}")
 
         elif command == "quit":
             break
