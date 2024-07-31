@@ -11,9 +11,10 @@ piece_values = {
     chess.KNIGHT: 320,
     chess.BISHOP: 330,
     chess.QUEEN: 900,
-    chess.KING: 20000
+    chess.KING: 20000,
 }
 
+# fmt: off
 pawnEvalWhite = [
     0,  0,  0,  0,  0,  0,  0,  0,
     5, 10, 10, -20, -20, 10, 10,  5,
@@ -84,6 +85,7 @@ kingEvalWhite = [
 ]
 
 kingEvalBlack = list(reversed(kingEvalWhite))
+# fmt: on
 
 
 def evaluate_piece(piece: chess.Piece, square: chess.Square):
@@ -101,9 +103,9 @@ def evaluate_piece(piece: chess.Piece, square: chess.Square):
     if piece.piece_type == chess.KING:
         # TODO: add endgame eval
         mapping = kingEvalWhite if piece.color == chess.WHITE else kingEvalBlack
-    
+
     return mapping[square]
-    
+
 
 def evaluate(board: chess.Board):
     if board.is_checkmate():
@@ -111,7 +113,7 @@ def evaluate(board: chess.Board):
             return -9999
         else:
             return 9999
-        
+
     elif board.is_stalemate() or board.is_insufficient_material():
         return 0
 
@@ -122,7 +124,7 @@ def evaluate(board: chess.Board):
         if not piece:
             continue
 
-        piece_eval = piece_values[piece.piece_type] 
+        piece_eval = piece_values[piece.piece_type]
         square_eval = evaluate_piece(piece, square)
 
         eval = piece_eval + square_eval
@@ -138,8 +140,8 @@ def evaluate(board: chess.Board):
 def negamax(board: chess.Board, depth, alpha, beta, color):
     if depth == 0 or board.is_game_over():
         return color * evaluate(board)
-    
-    max_eval = -float('inf')
+
+    max_eval = -float("inf")
     for move in board.legal_moves:
         board.push(move)
         eval = -negamax(board, depth - 1, -beta, -alpha, -color)
@@ -148,16 +150,16 @@ def negamax(board: chess.Board, depth, alpha, beta, color):
         alpha = max(alpha, eval)
         if alpha >= beta:
             break
-    
+
     return max_eval
 
 
 def find_best_move_and_evaluation(board: chess.Board, depth):
     best_move = None
-    best_value = -float('inf')
+    best_value = -float("inf")
 
-    alpha = -float('inf')
-    beta = float('inf')
+    alpha = -float("inf")
+    beta = float("inf")
     color = 1 if board.turn == chess.WHITE else -1
 
     for move in board.legal_moves:
@@ -168,8 +170,9 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
         if board_value > best_value:
             best_value = board_value
             best_move = move
-        
+
     return best_move, best_value
+
 
 # TODO: learn more about this uci wrapper
 def uci_loop():
@@ -187,17 +190,16 @@ def uci_loop():
         elif command.startswith("position"):
             if "startpos" in command:
                 board.set_fen(chess.STARTING_FEN)
-                moves = command.split("moves")[1].strip(
-                ) if "moves" in command else ""
+                moves = command.split("moves")[1].strip() if "moves" in command else ""
                 for move in moves.split():
                     board.push_uci(move)
 
             elif "fen" in command:
-                fen = command.split("position fen")[
-                    1].strip().split(" moves")[0].strip()
+                fen = (
+                    command.split("position fen")[1].strip().split(" moves")[0].strip()
+                )
                 board.set_fen(fen)
-                moves = command.split("moves")[1].strip(
-                ) if "moves" in command else ""
+                moves = command.split("moves")[1].strip() if "moves" in command else ""
                 for move in moves.split():
                     board.push_uci(move)
 
