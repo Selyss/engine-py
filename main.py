@@ -164,6 +164,9 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
 
     for move in board.legal_moves:
         board.push(move)
+        if board.can_claim_threefold_repetition():
+            board.pop()
+            continue
         board_value = -negamax(board, depth - 1, -beta, -alpha, -color)
         board.pop()
 
