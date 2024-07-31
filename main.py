@@ -158,10 +158,11 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
 
     alpha = -float('inf')
     beta = float('inf')
+    color = 1 if board.turn == chess.WHITE else -1
 
     for move in board.legal_moves:
         board.push(move)
-        board_value = -negamax(board, depth - 1, -beta, -alpha, -1)
+        board_value = -negamax(board, depth - 1, -beta, -alpha, -color)
         board.pop()
 
         if board_value > best_value:
