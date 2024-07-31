@@ -135,36 +135,21 @@ def evaluate(board: chess.Board):
     return overall_eval
 
 
-def minimax(board: chess.Board, depth, alpha, beta, maximizer):
-    # base case
+def negamax(board: chess.Board, depth, alpha, beta, color):
     if depth == 0 or board.is_game_over():
-        return evaluate(board)
-
-    legal_moves = list(board.legal_moves)
-    if maximizer:
-        max_eval = -float('inf')
-        for move in legal_moves:
-            board.push(move)
-            eval = minimax(board, depth - 1, alpha, beta, False)
-            board.pop()
-            max_eval = max(max_eval, eval)
-            alpha = max(alpha, eval)
-            if beta <= alpha:
-                break
-
-        return max_eval
-    else:
-        min_eval = float('inf')
-        for move in legal_moves:
-            board.push(move)
-            eval = minimax(board, depth - 1, alpha, beta, True)
-            board.pop()
-            min_eval = min(min_eval, eval)
-            beta = min(beta, eval)
-            if beta <= alpha:
-                break
-
-        return min_eval
+        return color * evaluate(board)
+    
+    max_eval = -float('inf')
+    for move in board.legal_moves:
+        board.push(move)
+        eval = -negamax(board, depth - 1, -beta, -alpha, -color)
+        board.pop()
+        max_eval = max(max_eval, eval)
+        alpha = max(alpha, eval)
+        if alpha >= beta:
+            break
+    
+    return max_eval
 
 
 def find_best_move_and_evaluation(board: chess.Board, depth):
@@ -176,7 +161,7 @@ def find_best_move_and_evaluation(board: chess.Board, depth):
 
     for move in board.legal_moves:
         board.push(move)
-        board_value = minimax(board, depth - 1, alpha, beta, False)
+        board_value = -negamax(board, depth - 1, -beta, -alpha, -1)
         board.pop()
 
         if board_value > best_value:
